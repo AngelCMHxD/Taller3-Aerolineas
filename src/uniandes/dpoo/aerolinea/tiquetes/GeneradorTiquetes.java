@@ -27,18 +27,16 @@ public class GeneradorTiquetes
      */
     public static Tiquete generarTiquete( Vuelo vuelo, Cliente cliente, int tarifa )
     {
-        int numero = ( int ) ( Math.random( ) * 10e7 );
-        String codigo = "" + numero;
-        while( codigos.contains( codigo ) )
-        {
-            numero = ( int ) ( Math.random( ) * 10e7 );
-            codigo = "" + numero;
+        int numero = (int)(Math.random() * 10e6);
+        String codigo = String.format("%07d", numero);
+        while(codigos.contains(codigo)) {
+            numero = (int)(Math.random() * 10e6);
+            codigo = String.format("%07d", numero);
         }
 
-        while( codigo.length( ) < 7 )
-            codigo = "0" + codigo;
-
-        return new Tiquete( codigo, vuelo, cliente, tarifa );
+        Tiquete tiquete = new Tiquete(codigo, vuelo, cliente, tarifa);
+        registrarTiquete(tiquete);
+        return tiquete;
     }
 
     /**
@@ -47,7 +45,7 @@ public class GeneradorTiquetes
      */
     public static void registrarTiquete( Tiquete unTiquete )
     {
-        // TODO implementar
+        codigos.add(unTiquete.getCodigo());
     }
 
     /**
@@ -57,7 +55,6 @@ public class GeneradorTiquetes
      */
     public static boolean validarTiquete( String codigoTiquete )
     {
-        // TODO implementar
-        return false;
+        return codigos.contains(codigoTiquete);
     }
 }
